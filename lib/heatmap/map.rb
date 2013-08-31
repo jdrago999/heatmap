@@ -25,13 +25,12 @@ module Heatmap
       @clut_image_file = Magick::Image.read(clut_image)[0] if File.exists?(clut_image)
     end
 
-    def output(format = "png", filename=nil)
+    def output(filename=nil)
       @dot_image_file || self.dot_image=DEFAULT_DOT_IMAGE
       unless @width && @height
         @width, @height = self.points_bounds
       end
       @heatmap = Magick::Image.new(@width, @height)
-      @heatmap.format = format
       generate_map
       colorize
       if filename
@@ -45,6 +44,10 @@ module Heatmap
 
     def generate_map
       @points.each do |point|
+        if @height and @height
+          # restrict adding point's that not belong to `map area`
+          next unless (point.x <= @width and point.y <= @height) or [point.y, point.x].min >= 0
+        end
         @heatmap = @heatmap.dissolve(@dot_image_file, point.intensity, 1, Magick::NorthWestGravity, point.x, point.y)
         GC.start  # prevent rmagick from leaking memory
       end
