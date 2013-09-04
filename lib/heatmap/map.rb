@@ -1,7 +1,4 @@
 module Heatmap
-
-  require 'RMagick'
-
   class Map
     ASSET_DIR = File.expand_path(File.join(File.dirname(__FILE__), '../..', 'examples'))
     DEFAULT_DOT_IMAGE = File.join(ASSET_DIR, "dots", "dot.png")
