@@ -41,7 +41,7 @@ module Heatmap
 
     def generate_map
       @points.each do |point|
-        if @height and @height
+        if @height and @width
           # restrict adding point's that not belong to `map area`
           next unless (point.x <= @width and point.y <= @height) or [point.y, point.x].min >= 0
         end
